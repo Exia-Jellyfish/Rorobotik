@@ -11,9 +11,9 @@
 
 void forward (int x)
 {
- Motor.speed(MOTOR1, 50);
+ Motor.speed(MOTOR1, -50);
   // Set speed of MOTOR2, Anticlockwise
-  Motor.speed(MOTOR2, 50);
+  Motor.speed(MOTOR2, -50);
   delay(x);
   stopMotor(); 
 }
@@ -102,9 +102,9 @@ void setup() {
 }
 
 void loop() {
-  //delay(2000);
-  //forward(2000);
-  //turnRightCorner();
+  delay(2000);
+  forward(2000);
+  turnRightCorner();
   //turnLeftCorner();
   getsensor();
   //stopMotor(); 
