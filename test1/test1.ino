@@ -3,10 +3,10 @@
 //MOTOR1 = DROITE
 // default I2C address is 0x0f
 #define I2C_ADDRESS 0x0f
-#define LRi 1 //left RI sensor
-#define LRI 2 //left RI sensor line follower
-#define RRI 3 //right RI sensor line follower
-#define RRi 4 //right RI sensor
+#define IRLEFT 2 //left RI sensor
+#define LEFTLINE 3 //left RI sensor line follower
+#define RIGHTLINE 4 //right RI sensor line follower
+#define IRRIGHT 5 //right RI sensor
 
 
 void forward (int x)
@@ -23,7 +23,7 @@ void turnRightCorner(){
   Motor.speed(MOTOR1, -50);
   // Change speed and direction of MOTOR2
   Motor.speed(MOTOR2, 50);
-  delay(1000);
+  delay(900);
   // Stop MOTOR1 and MOTOR2
   stopMotor();
 }
@@ -46,22 +46,26 @@ void stopMotor (){
 
 
 void getsensor(){
-  int lri;
-  int rri;
+  
 
-  if (digitalRead(LRI) == HIGH){
-     lri = 1;
+  if (digitalRead(IRLEFT) == HIGH){
+     //Serial.println("IRLEFT HIGH");
   }
-  else {lri = 0;}
+  else { //Serial.println("IRLEFT LOW");}
 
-  if (digitalRead(RRI) == HIGH){
-     rri = 1;
+  if (digitalRead(LEFTLINE) == HIGH){
+    //Serial.println("LEFTLINE HIGH");
+  }else{
+    //Serial.println("LEFTLINE LOW");
   }
-  else {rri = 0;}
+  
+  if (digitalRead(RIGHTLINE) == HIGH){
+    //Serial.println("RIGHTLINE HIGH");
+  }else{
+    Serial.println("RIGHTLINE LOW");
+  }
 
-  driving(lri, rri);
-
-}
+}}
 
 void rectifyright(){
 
@@ -72,7 +76,7 @@ void rectifyleft(){
 }
 
 
-void driving(int lri, int rri){
+/*void driving(int lri, int rri){
   switch(lri){
 
       case 1:
@@ -91,17 +95,18 @@ void driving(int lri, int rri){
       stopMotor(); 
       break; 
       }
-}
+}*/
 
 void setup() {
   Motor.begin(I2C_ADDRESS);
 }
 
 void loop() {
-  delay(2000);
-  forward(2000);
-  turnRightCorner();
-  turnLeftCorner();
-  stopMotor(); 
+  //delay(2000);
+  //forward(2000);
+  //turnRightCorner();
+  //turnLeftCorner();
+  getsensor();
+  //stopMotor(); 
 
 }
