@@ -1,10 +1,7 @@
-// Numéro de l'interruption 0, il correspond à la pin 2
-const int interrupt = 0;
-
-// Pin 9 de l'Arduino Uno
-const int canalB   = 9;
-
-
+#include "Grove_I2C_Motor_Driver.h"
+#define I2C_ADDRESS 0x0f
+// Déclaration des constantess
+//const byte interruptPin = 2;
 // Fin déclaration des constantes
 
 // Déclaration des fonctions
@@ -28,28 +25,30 @@ long compt= 0;
 // Fonction appelée par un tic du codeur.
 void Reagir()
 {
-    compt++;
-    Serial.println(compt);
-  
+   compt++;
 }
 
 void setup()
 {
   // Permet un affichage du résultat sur la consol Série
   Serial.begin(9600);
+  Motor.begin(I2C_ADDRESS);
 
   // Initialisation des pin 9 et 10 en entrèes
-  pinMode(2, INPUT);
-  attachInterrupt(interrupt, Reagir, RISING);
+  //pinMode(2, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(2), Reagir, RISING);
+   
 }
 // Fin initialisation
 //-----------------------------------------------------------
 
 void loop()
 {
-  delay(5000);
-
+  Motor.speed(MOTOR1, -50);
+  Motor.speed(MOTOR2, -50);
+  delay(1000);
   Serial.println(compt);
+  compt =0; 
 
 }
 
