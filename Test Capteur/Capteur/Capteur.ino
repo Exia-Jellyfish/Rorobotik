@@ -1,51 +1,65 @@
 #include "Grove_I2C_Motor_Driver.h"
 
 #define I2C_ADDRESS 0x0f
-#define IRLEFT 6 //left IR sensor
-#define LEFTLINE 5 //left IR sensor line follower
-#define RIGHTLINE 3 //right IR sensor line follower
-#define IRRIGHT 2 //right IR sensor
+#define IRLEFT 2 //left IR sensor
+#define LEFTLINE 3 //left IR sensor line follower
+#define RIGHTLINE 4 //right IR sensor line follower
+#define IRRIGHT 6 //right IR sensor
 
-bool irr;
-bool irl;
-bool lineR;
-bool lineL;
 
 
 void enableIRr(){
-  irr = true;
+ 
   Serial.println("irr");
 }
 
 void enableIRl(){
-  irl = true;
+  
   Serial.println("irl");
 }
 
 void enableR(){
-  lineR = true;
+
   Serial.println("lineR");
 }
 
 void enableL(){
-  lineL = true;
+  
   Serial.println("lineL");
 }
 
 void setup() {
   // put your setup code here, to run once:7
   Serial.begin(9600);
- 
+
   
-  attachInterrupt(digitalPinToInterrupt(IRRIGHT), enableIRr, FALLING);
-  attachInterrupt(digitalPinToInterrupt(IRLEFT),enableIRl,FALLING);
-  attachInterrupt(digitalPinToInterrupt(RIGHTLINE), enableR, FALLING);
-  attachInterrupt(digitalPinToInterrupt(LEFTLINE), enableL, FALLING);
 
 
 }
 
 void loop() {
+/*if (digitalRead(IRLEFT) == HIGH){
+     Serial.println("IRLEFT HIGH");
+  }
+  else { Serial.println("IRLEFT LOW");}*/
 
+  if (digitalRead(LEFTLINE) == HIGH){
+    Serial.println("LEFTLINE HIGH");
+  }else{
+    Serial.println("LEFTLINE LOW");
+  }
+  
+  if (digitalRead(RIGHTLINE) == HIGH){
+    Serial.println("RIGHTLINE HIGH");
+  }else{
+    Serial.println("RIGHTLINE LOW");
+  }
+
+ /* if (digitalRead(IRRIGHT) == HIGH){
+     Serial.println("IRRIGHT HIGH");
+  }
+  else { Serial.println("IRRIGHT LOW");}*/
+
+delay(300);
 
 }
