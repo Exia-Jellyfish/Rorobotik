@@ -7,14 +7,11 @@
 #define IRRIGHT 6 //right IR sensor
 //MOTOR1 = GAUCHE
 //MOTOR2 = DROITE
-unsigned long t;
 char irr;
 char irl;
 char lineL;
 char lineR;
-String code;
-char tab[5];
-// default I2C address is 0x0f
+int n;
 #define I2C_ADDRESS 0x0f
 
 
@@ -41,7 +38,7 @@ void rotateRight(){
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, 50);
 }
-
+/*
 void adjustLeft(){
     Motor.speed(MOTOR1, 50);
   // Set speed of MOTOR2, Clockwise
@@ -52,7 +49,7 @@ void adjustRight(){
     Motor.speed(MOTOR1, -50);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, 50);
-}
+}*/
 
 void stop(){
   Motor.stop(MOTOR1);
@@ -95,20 +92,27 @@ void check(){
 
 void botChoice(){
   if(lineR == '0' && lineL == '0'){
-    stop();
-    Serial.println("Staaap");
+    n++;
+    
+    Serial.println(n);
+    if (n>400){
+      stop();
+    }
   }
   if(lineR == '1' && lineL == '1'){
     goForward();
+    n=0;
     Serial.println("Foreward");
   }
   if(lineR == '1' && lineL == '0'){
-    adjustRight();
+    rotateRight();
+    n=0;
     Serial.println("adjRight");
   }
   if(lineR == '0' && lineL == '1'){
-    adjustLeft();
-    Serial.println("AdjLeft");
+   rotateLeft();
+   n=0;
+    Serial.println("adjLeft");
   }
   
   
@@ -133,13 +137,14 @@ void setup() {
   irl = '0';
   lineR = '0';
   lineL = '0';
-  
+  Motor.speed(MOTOR1, -30);
+  Motor.speed(MOTOR2, -30);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   check();
   botChoice();
-  
+   
   
 }
