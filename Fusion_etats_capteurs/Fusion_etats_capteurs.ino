@@ -28,26 +28,38 @@ void goForward(){
 }
 
 void rotateLeft(){
+  while(digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW ){
     Motor.speed(MOTOR1, crouise);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, -crouise);
+  }
+  goForward(); 
 }
 
 void rotateRight(){
+  while(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, -crouise);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, crouise);
+  }
+  goForward(); 
 }
 void adjustLeft(){
+  while (digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, 20);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, -20);
+  }
+goForward(); 
 }
 
 void adjustRight(){
+  while (digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, -20);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, 20);
+  }
+  goForward(); 
 }
 
 void stop(){
@@ -65,30 +77,6 @@ void stop(){
  * 
  */
 
-/*
- void check(){
-  if (digitalRead(IRLEFT) == HIGH){
-   irl = '1';
-  }
-  else {irl= '0';}
-
-  if (digitalRead(LEFTLINE) == HIGH){
-   lineL = '1';
-  }else{
-   lineL = '0';
-  }
-  
-  if (digitalRead(RIGHTLINE) == HIGH){
-   lineR = '1';
-  }else{
-   lineR = '0';
-  }
-
-  if (digitalRead(IRRIGHT) == HIGH){
-     irr = '1';
-  }
-  else { irr = '0';}
-}*/
 
 void botChoice(){
   if(digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRLEFT) == LOW && digitalRead(IRRIGHT) == LOW){
@@ -175,8 +163,7 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //check();
+  // put your main code here, to run repeatedly
   botChoice();
   stop(); 
   
