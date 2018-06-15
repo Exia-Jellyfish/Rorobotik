@@ -119,8 +119,20 @@ void botChoice(){
 }
 
 
-
-
+void direction(){
+  if (irr == 0 && irl == 1){
+    rotateLeft(); 
+  }
+  if(irr == 1 && irl == 1){
+    Serial.print (" What should I do?");
+  }
+  if(irr == 1 && irl == 0){
+    rotateRight(); 
+  }
+  if(irr == 0 && irl == 0){
+    goForward(); 
+  }
+}
 
 /*
  * 
