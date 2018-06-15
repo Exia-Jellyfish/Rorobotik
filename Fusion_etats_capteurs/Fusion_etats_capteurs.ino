@@ -13,6 +13,7 @@ char lineL;
 char lineR;
 int n;
 #define I2C_ADDRESS 0x0f
+#define crouise 30
 
 
 /*
@@ -22,21 +23,21 @@ int n;
  * 
  */
 void goForward(){
-   Motor.speed(MOTOR1, -50);
+   Motor.speed(MOTOR1, crouise);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -50);
+  Motor.speed(MOTOR2, -crouise);
 }
 
 void rotateLeft(){
-    Motor.speed(MOTOR1, 50);
+    Motor.speed(MOTOR1, crouise);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -50);
+  Motor.speed(MOTOR2, -crouise);
 }
 
 void rotateRight(){
-    Motor.speed(MOTOR1, -50);
+    Motor.speed(MOTOR1, -crouise);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, 50);
+  Motor.speed(MOTOR2, crouise);
 }
 /*
 void adjustLeft(){
@@ -91,28 +92,69 @@ void check(){
 }
 
 void botChoice(){
-  if(lineR == '0' && lineL == '0'){
+  if(lineR == '0' && lineL == '0' && irr == '0' && irl == '0'){
     n++;
-    
     Serial.println(n);
     if (n>400){
       stop();
-    }
+    } 
   }
-  if(lineR == '1' && lineL == '1'){
+  if(lineR == '1' && lineL == '1' && irr == '0' && irl == '0'){
     goForward();
     n=0;
     Serial.println("Foreward");
   }
-  if(lineR == '1' && lineL == '0'){
+  if(lineR == '1' && lineL == '0' && irr == '0' && irl == '0'){
     rotateRight();
     n=0;
     Serial.println("adjRight");
   }
-  if(lineR == '0' && lineL == '1'){
+  if(lineR == '0' && lineL == '1'&& irr == '0' && irl == '0'){
    rotateLeft();
    n=0;
     Serial.println("adjLeft");
+  }
+
+
+  if(lineR == '0' && lineL == '0' && irr == '1' && irl == '0'){
+    Serial.println("tournant à droite"); 
+  }
+  if(lineR == '0' && lineL == '0' && irr == '0' && irl == '1'){
+    Serial.println("tournant à gauche"); 
+  }
+   if(lineR == '0' && lineL == '0' && irr == '1' && irl == '1'){
+    Serial.println("tournant à gauche ou à droite"); 
+  }
+  
+  if(lineR == '1' && lineL == '1' && irr == '1' && irl == '0'){
+    Serial.println("tournant à droit ou tout droit"); 
+  }
+  if(lineR == '1' && lineL == '1' && irr == '0' && irl == '1'){
+    Serial.println("tournant à gauche ou tout droit"); 
+  }
+  if(lineR == '1' && lineL == '1' && irr == '1' && irl == '1'){
+    Serial.println("tournant à gauche, droite ou tout droit"); 
+  }
+  
+  if(lineR == '1' && lineL == '0' && irr == '1' && irl == '0'){
+    Serial.println("tournant à droite mais robot décalé à gauche"); 
+  }
+  if(lineR == '1' && lineL == '0' && irr == '0' && irl == '1'){
+    Serial.println("tournant à guauche et robot décalé à gauche."); 
+  }
+  if(lineR == '1' && lineL == '0' && irr == '1' && irl == '1'){
+    Serial.println("tournant à droite, gauche et tout droit mais robot décalé à gauche "); 
+  }
+  
+ 
+  if(lineR == '0' && lineL == '1'&& irr == '1' && irl == '0'){
+    Serial.println("tournant à droite et tout droit et robot décalé sur la droite "); 
+  }
+  if(lineR == '0' && lineL == '1'&& irr == '0' && irl == '1'){
+    Serial.println("tournant à gauche et tout droit et robot décalé sur la droite"); 
+  }
+   if(lineR == '0' && lineL == '1'&& irr == '1' && irl == '1'){
+    Serial.println("tournant à droite, gauche et tout droit et robot décalé sur la droite ");
   }
   
   
@@ -134,9 +176,9 @@ void direction(){
   }
 }
 
-/*
- * 
- *  
+
+
+ /*  
  * Setup et loop
  * 
  */
@@ -149,8 +191,8 @@ void setup() {
   irl = '0';
   lineR = '0';
   lineL = '0';
-  Motor.speed(MOTOR1, -30);
-  Motor.speed(MOTOR2, -30);
+  Motor.speed(MOTOR1, -crouise);
+  Motor.speed(MOTOR2, -crouise);
 }
 
 void loop() {
