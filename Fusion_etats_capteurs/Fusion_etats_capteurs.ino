@@ -1,20 +1,16 @@
 #include "Grove_I2C_Motor_Driver.h"
 
 #define I2C_ADDRESS 0x0f
-#define IRLEFT 2 //left IR sensor
+#define IRLEFT 7 //left IR sensor
 #define LEFTLINE 3 //left IR sensor line follower
 #define RIGHTLINE 4 //right IR sensor line follower
 #define IRRIGHT 6 //right IR sensor
 //MOTOR1 = GAUCHE
 //MOTOR2 = DROITE
-char irr;
-char irl;
-char lineL;
-char lineR;
 int n;
 #define I2C_ADDRESS 0x0f
-#define crouise 30
-
+#define cruise 30  //cruise speed
+#define adjust 20  //adjusting trajectory speed
 /*
  * 
  * 
@@ -22,35 +18,37 @@ int n;
  * 
  */
 void goForward(){
-   Motor.speed(MOTOR1, -crouise);
+   Motor.speed(MOTOR1, -cruise);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -crouise);
+  Motor.speed(MOTOR2, -cruise);
 }
 
 void rotateLeft(){
   while(digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW ){
-    Motor.speed(MOTOR1, crouise);
+    Motor.speed(MOTOR1, cruise);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -crouise);
+  Motor.speed(MOTOR2, -cruise);
+
   }
-  goForward(); 
 }
 
 void rotateRight(){
   while(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, -crouise);
+    Motor.speed(MOTOR1, -cruise);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, crouise);
+  Motor.speed(MOTOR2, cruise);
+
   }
-  goForward(); 
+
 }
 void adjustLeft(){
   while (digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, 20);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, -20);
+ 
   }
-goForward(); 
+
 }
 
 void adjustRight(){
@@ -58,8 +56,9 @@ void adjustRight(){
     Motor.speed(MOTOR1, -20);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, 20);
+  
   }
-  goForward(); 
+
 }
 
 void stop(){
@@ -79,67 +78,83 @@ void stop(){
 
 
 void botChoice(){
-  if(digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRLEFT) == LOW && digitalRead(IRRIGHT) == LOW){
+  if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0000
     n++;
     Serial.println(n);
     if (n>400){
       stop();
     } 
   }
-  if(digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRLEFT) == LOW && digitalRead(IRRIGHT) == LOW){
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110
     goForward();
     n=0;
     Serial.println("Foreward");
   }
-  if(digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRLEFT) == LOW && digitalRead(IRRIGHT) == LOW){
-    rotateRight();
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010
+    adjustRight();
     n=0;
     Serial.println("adjRight");
   }
-  if(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == HIGH){
-   rotateLeft();
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0100
+   adjustLeft();
    n=0;
     Serial.println("adjLeft");
   }
 
-  if(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == LOW){
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH){ // 0001
+    rotateRight();
     Serial.println("tournant à droite"); 
   }
-  if(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(IRRIGHT) == LOW && digitalRead(IRLEFT) == HIGH){
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW  && digitalRead(IRRIGHT) == LOW  ){ //1000
+    rotateLeft();
     Serial.println("tournant à gauche"); 
   }
-   if(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == HIGH){
+   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //1001
     Serial.println("tournant à gauche ou à droite"); 
+    if (millis()%2 ==1){
+      rotateLeft();
+    }else{
+      rotateRight();
+    }
   }
   
-  if(digitalRead(RIGHTLINE) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == LOW){
-    Serial.println("tournant à droit ou tout droit"); 
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH){ //0111
+    Serial.println("tournant à droite ou tout droit"); 
+    if (millis()%2 ==1){
+      rotateLeft();
+    }else{
+      rotateRight();
+    }
   }
-  if(digitalRead(RIGHTLINE) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && digitalRead(IRLEFT) == HIGH){
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW ){ //1110
     Serial.println("tournant à gauche ou tout droit"); 
   }
-  if(digitalRead(RIGHTLINE) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == HIGH){
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1111
     Serial.println("tournant à gauche, droite ou tout droit"); 
   }
   
-  if(digitalRead(RIGHTLINE) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == LOW){
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH  ){ // 0011
     Serial.println("tournant à droite mais robot décalé à gauche"); 
   }
-  if(digitalRead(RIGHTLINE) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(IRRIGHT) == LOW && digitalRead(IRLEFT) == HIGH){
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == LOW ){ //1000
     Serial.println("tournant à guauche et robot décalé à gauche."); 
   }
-  if(digitalRead(RIGHTLINE) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == HIGH){
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1011
     Serial.println("tournant à droite, gauche et tout droit mais robot décalé à gauche "); 
   }
   
- 
-  if(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == LOW){
+  if( digitalRead(IRLEFT) == LOW  && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //0101
     Serial.println("tournant à droite et tout droit et robot décalé sur la droite "); 
   }
-  if(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && digitalRead(IRLEFT) == HIGH){
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == LOW ){ //0101
     Serial.println("tournant à gauche et tout droit et robot décalé sur la droite"); 
+    if (millis()%2 ==1){
+      rotateLeft();
+    }else{
+      goForward();
+    }
   }
-   if(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH && digitalRead(IRLEFT) == HIGH){
+   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == HIGH ){ //1101
     Serial.println("tournant à droite, gauche et tout droit et robot décalé sur la droite ");
   }
   
@@ -155,10 +170,7 @@ void setup() {
   // put your setup code here, to run once:
   Motor.begin(I2C_ADDRESS);
   Serial.begin(9600);
-  /*irr = '0';
-  irl = '0';
-  lineR = '0';
-  lineL = '0';*/
+
   goForward(); 
 }
 
