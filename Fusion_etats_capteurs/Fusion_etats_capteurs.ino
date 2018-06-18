@@ -9,8 +9,8 @@
 //MOTOR2 = DROITE
 int n;
 #define I2C_ADDRESS 0x0f
-#define cruise 30  //cruise speed
-#define adjust 20  //adjusting trajectory speed
+#define cruise 40 //cruise speed
+#define adjust 30  //adjusting trajectory speed
 /*
  * 
  * 
@@ -25,37 +25,35 @@ void goForward(){
 
 void rotateLeft(){
   while(digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW ){
-    Motor.speed(MOTOR1, cruise);
+    Motor.speed(MOTOR1, adjust);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -cruise);
-
+  Motor.speed(MOTOR2, -adjust);
   }
+  goForward();
 }
 
 void rotateRight(){
   while(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, -cruise);
+    Motor.speed(MOTOR1, -adjust);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, cruise);
-
+  Motor.speed(MOTOR2, adjust);
   }
-
+goForward();
 }
 void adjustLeft(){
   while (digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, 20);
+    Motor.speed(MOTOR1, 40);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -20);
- 
+  Motor.speed(MOTOR2, -40);
   }
 
 }
 
 void adjustRight(){
   while (digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, -20);
+    Motor.speed(MOTOR1, -40);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, 20);
+  Motor.speed(MOTOR2, 40);
   
   }
 
@@ -78,20 +76,20 @@ void stop(){
 
 
 void botChoice(){
-  if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0000
+  if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0000 Lost
     n++;
     Serial.println(n);
     if (n>400){
       stop();
     } 
   }
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110 full forward
     goForward();
     n=0;
-    Serial.println("Foreward");
+    Serial.println("Forward");
   }
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010
-    adjustRight();
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010 forward with adjustments needed to the right
+    adjustRight(); 
     n=0;
     Serial.println("adjRight");
   }
@@ -121,7 +119,7 @@ void botChoice(){
   if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH){ //0111
     Serial.println("tournant à droite ou tout droit"); 
     if (millis()%2 ==1){
-      rotateLeft();
+      goForward();
     }else{
       rotateRight();
     }
@@ -177,6 +175,6 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly
   botChoice();
-  stop(); 
+   
   
 }
