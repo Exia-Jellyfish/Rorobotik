@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="2.6">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="blenn"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2018-06-18 03:26:10 "/>
+        <attribute name="created" value="Ymxlbm47IE9CSS1XQU47IDIwMTgtMDYtMTg7IDEwOjE1OjM5IDsgMjI0OA=="/>
+        <attribute name="edited" value="Ymxlbm47IE9CSS1XQU47IDIwMTgtMDYtMTg7IDAzOjI2OjEwIDsgMjI0MQ=="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="code" type="Integer" array="False" size=""/>
+            <call expression="Setup()&#13;&#10;"/>
+            <while expression="on">
+                <call expression="loop()"/>
+            </while>
+        </body>
+    </function>
+    <function name="botchoice" type="None" variable="">
+        <parameters/>
+        <body>
+            <if expression="if (code = 0000)">
+                <then>
+                    <call expression="Do stuff"/>
+                </then>
+                <else>
+                    <if expression="if (code = 1000)">
+                        <then/>
+                        <else>
+                            <if expression="if (code = 1100)">
+                                <then/>
+                                <else>
+                                    <if expression="if (code = 1110)">
+                                        <then/>
+                                        <else>
+                                            <if expression="if (code = 1111)">
+                                                <then/>
+                                                <else>
+                                                    <if expression="if (code = 1101)">
+                                                        <then/>
+                                                        <else>
+                                                            <if expression="if (code = 1011)">
+                                                                <then/>
+                                                                <else>
+                                                                    <if expression="if (code = 1010)">
+                                                                        <then/>
+                                                                        <else>
+                                                                            <if expression="if (code = 1001)">
+                                                                                <then/>
+                                                                                <else>
+                                                                                    <if expression="if (code = 0100)">
+                                                                                        <then/>
+                                                                                        <else>
+                                                                                            <if expression="if (code = 0110)">
+                                                                                                <then/>
+                                                                                                <else>
+                                                                                                    <if expression="if (code = 0111)">
+                                                                                                        <then/>
+                                                                                                        <else>
+                                                                                                            <if expression="if (code = 0011)">
+                                                                                                                <then/>
+                                                                                                                <else>
+                                                                                                                    <if expression="if (code = 0010)">
+                                                                                                                        <then/>
+                                                                                                                        <else>
+                                                                                                                            <if expression="if (code = 0101)">
+                                                                                                                                <then/>
+                                                                                                                                <else/>
+                                                                                                                            </if>
+                                                                                                                        </else>
+                                                                                                                    </if>
+                                                                                                                </else>
+                                                                                                            </if>
+                                                                                                        </else>
+                                                                                                    </if>
+                                                                                                </else>
+                                                                                            </if>
+                                                                                        </else>
+                                                                                    </if>
+                                                                                </else>
+                                                                            </if>
+                                                                        </else>
+                                                                    </if>
+                                                                </else>
+                                                            </if>
+                                                        </else>
+                                                    </if>
+                                                </else>
+                                            </if>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="loop" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="botChopice()"/>
+        </body>
+    </function>
+</flowgorithm>
