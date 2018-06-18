@@ -126,23 +126,59 @@ void botChoice(){
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW ){ //1110
     Serial.println("tournant à gauche ou tout droit"); 
+    if (millis()%2 ==1){
+      rotateLeft();
+    }else{
+      goForward();
+    }
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1111
     Serial.println("tournant à gauche, droite ou tout droit"); 
+     switch (millis()%3){
+      case 0:
+        goForward();
+        break;
+        
+      case 1:
+         rotateLeft();
+         break;
+
+      default:
+         rotateRight();
+     }
   }
   
   if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH  ){ // 0011
     Serial.println("tournant à droite mais robot décalé à gauche"); 
+    rotateRight();
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == LOW ){ //1000
     Serial.println("tournant à guauche et robot décalé à gauche."); 
+    rotateLeft();
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1011
     Serial.println("tournant à droite, gauche et tout droit mais robot décalé à gauche "); 
+    switch (millis()%3){
+      case 0:
+        goForward();
+        break;
+        
+      case 1:
+         rotateLeft();
+         break;
+
+      default:
+         rotateRight();
+     }
   }
   
   if( digitalRead(IRLEFT) == LOW  && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //0101
     Serial.println("tournant à droite et tout droit et robot décalé sur la droite "); 
+     if (millis()%2 ==1){
+      goForward();
+    }else{
+      rotateRight();
+    }
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == LOW ){ //0101
     Serial.println("tournant à gauche et tout droit et robot décalé sur la droite"); 
@@ -154,6 +190,18 @@ void botChoice(){
   }
    if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == HIGH ){ //1101
     Serial.println("tournant à droite, gauche et tout droit et robot décalé sur la droite ");
+    switch (millis()%3){
+      case 0:
+        goForward();
+        break;
+        
+      case 1:
+         rotateLeft();
+         break;
+
+      default:
+         rotateRight();
+     }
   }
   
   
