@@ -15,6 +15,7 @@
     {
       uint8_t buf[VW_MAX_MESSAGE_LEN];
       uint8_t buflen = VW_MAX_MESSAGE_LEN;
+       vw_wait_rx();
       if(vw_get_message(buf, &buflen)) // non-blocking I/O
       {
         int i;
@@ -22,8 +23,9 @@
         Serial.print("Got: ");
         for(i = 0; i < buflen; ++i)
         {
-          Serial.print(buf[i], HEX);
-          Serial.print(" ");
+          //Serial.print(buf[i], HEX);
+          //Serial.print(" ");
+          Serial.print((char)buf[i]); 
         }
         Serial.println("");
       }

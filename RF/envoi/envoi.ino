@@ -9,7 +9,7 @@ void setup()
 
 void loop()
 {
- const char *msg = "hello";
+ const char *msg = "Hello, World!";
  vw_send((uint8_t *)msg, strlen(msg));  // Send 'hello' every 400ms.
- delay(400);
+ delay(100);
 }
