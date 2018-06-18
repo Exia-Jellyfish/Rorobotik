@@ -4,7 +4,7 @@
 #define IRLEFT 7 //left IR sensor
 #define LEFTLINE 3 //left IR sensor line follower
 #define RIGHTLINE 4 //right IR sensor line follower
-#define IRRIGHT 6 //right IR sensor
+#define IRRIGHT 8 //right IR sensor
 //MOTOR1 = GAUCHE
 //MOTOR2 = DROITE
 int n;
@@ -83,31 +83,31 @@ void botChoice(){
       stop();
     } 
   }
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110 full forward
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110 full forward
     goForward();
     n=0;
     Serial.println("Forward");
   }
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010 forward with adjustments needed to the right
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010 forward with adjustments needed to the right
     adjustRight(); 
     n=0;
     Serial.println("adjRight");
   }
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0100
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0100
    adjustLeft();
    n=0;
     Serial.println("adjLeft");
   }
 
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH){ // 0001
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH){ // 0001
     rotateRight();
     Serial.println("tournant à droite"); 
   }
-  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW  && digitalRead(IRRIGHT) == LOW  ){ //1000
+   else if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW  && digitalRead(IRRIGHT) == LOW  ){ //1000
     rotateLeft();
     Serial.println("tournant à gauche"); 
   }
-   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //1001
+    else if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //1001
     Serial.println("tournant à gauche ou à droite"); 
     if (millis()%2 ==1){
       rotateLeft();
@@ -116,7 +116,7 @@ void botChoice(){
     }
   }
   
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH){ //0111
+   else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH){ //0111
     Serial.println("tournant à droite ou tout droit"); 
     if (millis()%2 ==1){
       goForward();
@@ -124,17 +124,17 @@ void botChoice(){
       rotateRight();
     }
   }
-  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW ){ //1110
+   else if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW ){ //1110
     Serial.println("tournant à gauche ou tout droit"); 
-    if (millis()%2 ==1){
-      rotateLeft();
-    }else{
+   if (millis()%2 ==1){
       goForward();
+    }else{
+      rotateLeft();
     }
   }
-  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1111
+   else if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1111
     Serial.println("tournant à gauche, droite ou tout droit"); 
-     switch (millis()%3){
+     switch (random(0-2)){
       case 0:
         goForward();
         break;
@@ -148,17 +148,17 @@ void botChoice(){
      }
   }
   
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH  ){ // 0011
+   else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH  ){ // 0011
     Serial.println("tournant à droite mais robot décalé à gauche"); 
     rotateRight();
   }
-  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == LOW ){ //1000
+   else if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == LOW ){ //1000
     Serial.println("tournant à guauche et robot décalé à gauche."); 
     rotateLeft();
   }
-  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1011
+  else  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1011
     Serial.println("tournant à droite, gauche et tout droit mais robot décalé à gauche "); 
-    switch (millis()%3){
+    switch (random(0-2)){
       case 0:
         goForward();
         break;
@@ -172,7 +172,7 @@ void botChoice(){
      }
   }
   
-  if( digitalRead(IRLEFT) == LOW  && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //0101
+   else if( digitalRead(IRLEFT) == LOW  && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //0101
     Serial.println("tournant à droite et tout droit et robot décalé sur la droite "); 
      if (millis()%2 ==1){
       goForward();
@@ -180,7 +180,7 @@ void botChoice(){
       rotateRight();
     }
   }
-  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == LOW ){ //0101
+   else if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == LOW ){ //0101
     Serial.println("tournant à gauche et tout droit et robot décalé sur la droite"); 
     if (millis()%2 ==1){
       rotateLeft();
@@ -188,9 +188,9 @@ void botChoice(){
       goForward();
     }
   }
-   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == HIGH ){ //1101
+    else if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == HIGH ){ //1101
     Serial.println("tournant à droite, gauche et tout droit et robot décalé sur la droite ");
-    switch (millis()%3){
+    switch (random(0-2)){
       case 0:
         goForward();
         break;
@@ -206,6 +206,91 @@ void botChoice(){
   
   
 }
+
+
+
+
+/*
+void botChoices(){
+   if( digitalRead(IRLEFT) == LOW){ //0
+      if (digitalRead(LEFTLINE) == LOW){ //00
+         if (digitalRead(RIGHTLINE) == LOW){//000
+            if (digitalRead(IRRIGHT) == LOW){ //0000
+            }
+            else{ //0001 
+            }
+         }
+         else{//001
+            if (digitalRead(IRRIGHT) == LOW){ //0010              
+            }
+            else{ //001             
+            }
+          }
+      }
+      else {//01
+        if (digitalRead(RIGHTLINE) == LOW){//010
+            if (digitalRead(IRRIGHT) == LOW){ //0100
+              
+            }
+            else{ //0101
+              
+            }
+         }
+         else{//001
+             if (digitalRead(IRRIGHT) == LOW){ //0110
+              
+            }
+            else{ //0111
+              
+            }
+          }
+        }
+
+   
+   }
+   else{ //1
+        if (digitalRead(LEFTLINE) == LOW){ //10
+         if (digitalRead(RIGHTLINE) == LOW){//100
+            if (digitalRead(IRRIGHT) == LOW){ //1000
+              
+            }
+            else{ //1001
+              
+            }
+         }
+         else{//101
+             if (digitalRead(IRRIGHT) == LOW){ //1010
+              
+            }
+            else{ //1011
+              
+            }
+          }
+      }
+       else {//11
+        if (digitalRead(RIGHTLINE) == LOW){//110
+            if (digitalRead(IRRIGHT) == LOW){ //1100
+              
+            }
+            else{ //1001
+              
+            }
+         }
+         else{//101
+             if (digitalRead(IRRIGHT) == LOW){ //1110
+              
+            }
+            else{ //0111
+              
+            }
+          }
+        }
+
+   
+    
+    }
+}*/
+
 
  /*  
  * Setup et loop
