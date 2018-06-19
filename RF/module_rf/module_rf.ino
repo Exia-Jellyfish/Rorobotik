@@ -2,9 +2,7 @@
 
     int RF_RX_PIN = 6;
     int n = 1;
-    uint8_t checkSum; 
-    uint8_t buf[VW_MAX_MESSAGE_LEN];
-    uint8_t buflen = VW_MAX_MESSAGE_LEN;
+
     
     struct entete{
       uint8_t start;
@@ -25,7 +23,8 @@
 
 
     void affichermsg (){
-     
+         uint8_t buf[VW_MAX_MESSAGE_LEN];
+         uint8_t buflen = VW_MAX_MESSAGE_LEN;
       vw_wait_rx();
       if(vw_get_message(buf, &buflen)) // non-blocking I/O
       {
@@ -54,6 +53,6 @@
 
     void loop()
     {
-      
+      Serial.println("le message est:");
       affichermsg(); 
     }
