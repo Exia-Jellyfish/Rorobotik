@@ -1,6 +1,6 @@
 #include <VirtualWire.h>
 
-    int RF_RX_PIN = 6;
+    int RF_RX_PIN = 7;
     int n = 1;
 
     
@@ -21,25 +21,6 @@
       data data; 
     };
 
-
-    void affichermsg (){
-         uint8_t buf[VW_MAX_MESSAGE_LEN];
-         uint8_t buflen = VW_MAX_MESSAGE_LEN;
-      vw_wait_rx();
-      if(vw_get_message(buf, &buflen)) // non-blocking I/O
-      {
-        int i;
-        // Message with a good checksum received, dump HEX
-        Serial.print("Got: ");
-        for(i = 0; i < buflen; ++i)
-        {
-          Serial.print((char)buf[i]); 
-        }
-        Serial.println("");
-      }
-      
-    }
-
     
 
     void setup()
@@ -54,5 +35,20 @@
     void loop()
     {
       Serial.println("le message est:");
-      affichermsg(); 
+    uint8_t buf[VW_MAX_MESSAGE_LEN];
+         uint8_t buflen = VW_MAX_MESSAGE_LEN;
+      vw_wait_rx();
+      if(vw_get_message(buf, &buflen)) // non-blocking I/O
+      {
+        int i;
+        //if((char)buf[1] + (char)buf[2] == "g1"){
+   
+        Serial.print("Got: ");
+        for(i = 0; i < buflen; ++i)
+        {
+          Serial.print((char)buf[i]); 
+        }
+        Serial.println("");
+      }
+       
     }
