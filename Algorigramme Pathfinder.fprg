@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="2.11">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="monneryr"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2018-06-20 01:14:08 "/>
+        <attribute name="created" value="bW9ubmVyeXI7TVNJOzIwMTgtMDYtMjA7IjEyOjU0OjA0ICI7MjMxMw=="/>
+        <attribute name="edited" value="bW9ubmVyeXI7TVNJOzIwMTgtMDYtMjA7IjAxOjE0OjA4ICI7MjsyNDIw"/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="n" type="Integer" array="False" size=""/>
+            <declare name="orders" type="String" array="False" size=""/>
+            <comment text="senex means the sequence : &quot;south, east, north, east, arrival point&quot;"/>
+            <assign variable="orders" expression="&quot;senex&quot;"/>
+            <comment text="dir means direction"/>
+            <declare name="dir" type="Integer" array="False" size=""/>
+            <comment text="temporal marker"/>
+            <declare name="t" type="Integer" array="False" size=""/>
+            <call expression="setup()"/>
+            <call expression="loop()"/>
+        </body>
+    </function>
+    <function name="BotChoice" type="None" variable="">
+        <parameters/>
+        <body>
+            <if expression="digitalRead(IRLEFT) == LOW &amp;&amp; digitalRead(LEFTLINE) == LOW &amp;&amp; digitalRead(RIGHTLINE) == LOW &amp;&amp; digitalRead(IRRIGHT) == LOW">
+                <then/>
+                <else>
+                    <if expression="digitalRead(IRLEFT) == LOW &amp;&amp; digitalRead(LEFTLINE) == HIGH &amp;&amp; digitalRead(RIGHTLINE) == HIGH &amp;&amp; digitalRead(IRRIGHT) == LOW">
+                        <then>
+                            <call expression="goForward()"/>
+                        </then>
+                        <else>
+                            <if expression="digitalRead(IRLEFT) == HIGH || digitalRead(IRRIGHT) == HIGH">
+                                <then>
+                                    <call expression="nextOrder()"/>
+                                </then>
+                                <else>
+                                    <if expression="digitalRead(IRLEFT) == LOW &amp;&amp; digitalRead(LEFTLINE) == HIGH &amp;&amp; digitalRead(RIGHTLINE) == LOW &amp;&amp; digitalRead(IRRIGHT) == LOW">
+                                        <then>
+                                            <call expression="adjustLeft()"/>
+                                        </then>
+                                        <else>
+                                            <if expression="digitalRead(IRLEFT) == LOW &amp;&amp; digitalRead(LEFTLINE) == LOW &amp;&amp; digitalRead(RIGHTLINE) == HIGH &amp;&amp; digitalRead(IRRIGHT) == LOW">
+                                                <then>
+                                                    <call expression="adjustRight()"/>
+                                                </then>
+                                                <else/>
+                                            </if>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="Loop" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="botChoice()"/>
+        </body>
+    </function>
+    <function name="NextOrder" type="None" variable="">
+        <parameters/>
+        <body>
+            <if expression="orders = &quot;n&quot;">
+                <then>
+                    <call expression="goNorth()"/>
+                </then>
+                <else>
+                    <if expression="orders = &quot;e&quot;">
+                        <then>
+                            <call expression="goEast()"/>
+                        </then>
+                        <else>
+                            <if expression="orders = &quot;s&quot;">
+                                <then>
+                                    <call expression="goSouth()"/>
+                                </then>
+                                <else>
+                                    <if expression="orders = &quot;w&quot;">
+                                        <then>
+                                            <call expression="goSouth()"/>
+                                        </then>
+                                        <else>
+                                            <call expression="stopMotor()"/>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="Setup" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="delay(2000)"/>
+            <call expression="Motorbegin(I2CADRESS)"/>
+            <call expression="Serialbegin(9600)"/>
+            <assign variable="n" expression="0"/>
+            <assign variable="dir" expression="WEST"/>
+        </body>
+    </function>
+</flowgorithm>

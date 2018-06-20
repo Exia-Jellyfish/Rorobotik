@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="2.6">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="louka"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2018-06-20 01:39:22 "/>
+        <attribute name="created" value="bG91a2E7IERFU0tUT1AtNFFPSU9SQTsgMjAxOC0wNi0yMDsgMTA6NDE6MzQgOyAyODQ5"/>
+        <attribute name="edited" value="bG91a2E7IERFU0tUT1AtNFFPSU9SQTsgMjAxOC0wNi0yMDsgMDE6Mzk6MjIgOyAyODUz"/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="setup()"/>
+            <call expression="loop()"/>
+        </body>
+    </function>
+    <function name="loop" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="createPacket()&#13;&#10;"/>
+            <call expression="vwsend(uint8t *contra, strlencontra)"/>
+            <call expression="vwsend(uint8t *msg, strlenmsg)"/>
+        </body>
+    </function>
+    <function name="setup" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Serialbegin(9600)"/>
+            <comment text="Setup transmit pin"/>
+            <call expression="vwsettxpin(RFTXPIN)"/>
+            <comment text="Transmission speed in bits per seconds"/>
+            <call expression="vwsetup(2000)"/>
+            <call expression="vwrxstart()"/>
+            <output expression="&quot;ready&quot;"/>
+        </body>
+    </function>
+</flowgorithm>
