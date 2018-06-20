@@ -4,9 +4,9 @@
         <attribute name="name" value=""/>
         <attribute name="authors" value="louka"/>
         <attribute name="about" value=""/>
-        <attribute name="saved" value="2018-06-20 12:50:51 "/>
+        <attribute name="saved" value="2018-06-20 01:39:22 "/>
         <attribute name="created" value="bG91a2E7IERFU0tUT1AtNFFPSU9SQTsgMjAxOC0wNi0yMDsgMTA6NDE6MzQgOyAyODQ5"/>
-        <attribute name="edited" value="bG91a2E7IERFU0tUT1AtNFFPSU9SQTsgMjAxOC0wNi0yMDsgMTI6NTA6NTEgOyAyODUw"/>
+        <attribute name="edited" value="bG91a2E7IERFU0tUT1AtNFFPSU9SQTsgMjAxOC0wNi0yMDsgMDE6Mzk6MjIgOyAyODUz"/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
@@ -19,8 +19,8 @@
         <parameters/>
         <body>
             <call expression="createPacket()&#13;&#10;"/>
-            <output expression="&quot;contra&quot;"/>
-            <output expression="contra"/>
+            <call expression="vwsend(uint8t *contra, strlencontra)"/>
+            <call expression="vwsend(uint8t *msg, strlenmsg)"/>
         </body>
     </function>
     <function name="setup" type="None" variable="">
@@ -32,7 +32,7 @@
             <comment text="Transmission speed in bits per seconds"/>
             <call expression="vwsetup(2000)"/>
             <call expression="vwrxstart()"/>
-            <call expression="Serialprintln(&quot;ready&quot;)"/>
+            <output expression="&quot;ready&quot;"/>
         </body>
     </function>
 </flowgorithm>
