@@ -4,9 +4,9 @@
         <attribute name="name" value=""/>
         <attribute name="authors" value="monneryr"/>
         <attribute name="about" value=""/>
-        <attribute name="saved" value="2018-06-20 01:14:08 "/>
+        <attribute name="saved" value="2018-06-20 02:44:15 "/>
         <attribute name="created" value="bW9ubmVyeXI7TVNJOzIwMTgtMDYtMjA7IjEyOjU0OjA0ICI7MjMxMw=="/>
-        <attribute name="edited" value="bW9ubmVyeXI7TVNJOzIwMTgtMDYtMjA7IjAxOjE0OjA4ICI7MjsyNDIw"/>
+        <attribute name="edited" value="bW9ubmVyeXI7TVNJOzIwMTgtMDYtMjA7IjAyOjQ0OjE1ICI7MzsyNDIz"/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
@@ -86,7 +86,7 @@
                                 <else>
                                     <if expression="orders = &quot;w&quot;">
                                         <then>
-                                            <call expression="goSouth()"/>
+                                            <call expression="goWest()"/>
                                         </then>
                                         <else>
                                             <call expression="stopMotor()"/>
