@@ -4,14 +4,14 @@
 int RF_TX_PIN = 6;
 
   struct entete{
-    const char start = "$";
+    const char *start = "$";
     const char *recepter = "g1";
-    const char *emetter = "g1";
+    const char *emetter = "e1";
     char *checksum = "";
   };
   
   struct data{
-    char *data = ""; 
+    char *data = "order"; 
   };
   
   struct packet{
@@ -26,14 +26,14 @@ char * createPacket(){
   entete hEad;
   data dAta;
   
-  char *checkSum =  ""; 
+   
   char *contra = "";
-  char * daTa = "lol";
+  char *daTa = "right";
   strcpy(hEad.start, "?");
   strcpy(hEad.recepter, "g1");
-  strcpy(hEad.emetter, "g1");
+  strcpy(hEad.emetter, "e1");
   strcpy(dAta.data, daTa);
-  checkSum  = getCheckSum(daTa);
+  char *checkSum  = getCheckSum(daTa); // problème à résuoudre avec la recupération de check sum. 
   strcpy(hEad.checksum, checkSum); 
   
   strcat(contra, (char *)hEad.start);
@@ -41,21 +41,19 @@ char * createPacket(){
   strcat(contra, (char *)hEad.emetter);
   strcat(contra, (char *)checkSum);
   strcat(contra, (char *)dAta.data);
-  return (char *)contra; 
-}
+  return contra; 
 
+  
+}
 char * getCheckSum(char *string)
 {
   int XOR;  
-  if( strlen(string) != 0){
   for (int i = 0; i < strlen(string); i++) 
   {
     XOR += *(string++); 
   }
-  }
   char xOR[12];
   sprintf(xOR, "%d", XOR);
- // Serial.println(xOR);
   return xOR; 
 
 } // ok 
@@ -74,10 +72,9 @@ void setup()
 
 void loop()
 {
- char * msg = createPacket();
+ char *msg = createPacket();
  Serial.println(msg);
-
  vw_send(msg, strlen(msg));
  vw_wait_tx(); 
- delay(10000000);
+ delay(10000);
 }

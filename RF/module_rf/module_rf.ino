@@ -23,8 +23,7 @@
         Serial.print("Got: ");
         for(i = 0; i < buflen; ++i)
         {
-          Serial.print(buf[i], HEX);
-          Serial.print(" ");
+          Serial.print((char *) buf[i]);
         }
         Serial.println("");
       } else Serial.println("else");
