@@ -7,7 +7,7 @@
 #define IRLEFT 8 //left IR sensor
 #define LEFTLINE 3 //left IR sensor line follower
 #define RIGHTLINE 4 //right IR sensor line follower
-#define IRRIGHT 6 //right IR sensor
+#define IRRIGHT 7 //right IR sensor
 //MOTOR1 = GAUCHE
 //MOTOR2 = DROITE
 #define WEST 0
@@ -17,9 +17,11 @@
 #define I2C_ADDRESS 0x0f
 #define cruise 40 //cruise speed
 #define adjust 30  //adjusting trajectory speed
+#define COOLDOWN 3000
 int n;
 String orders = "senex";
 int dir;
+String nodes = "acbba";
 int t;
 /*
  * 
@@ -34,8 +36,8 @@ void goForward(){
 }
 
 void rotateLeft(){
-   t = millis();
-  while(millis()<t+300){
+  
+  while(millis()<t+700){
      Motor.speed(MOTOR1, adjust);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, -adjust);
@@ -49,8 +51,8 @@ void rotateLeft(){
 }
 
 void rotateRight(){
-  t = millis();
-  while(millis()<t+300){
+
+  while(millis()<t+700){
      Motor.speed(MOTOR1, -adjust);
   // Set speed of MOTOR2, Clockwise
   Motor.speed(MOTOR2, adjust);
@@ -62,6 +64,8 @@ void rotateRight(){
   }
 goForward();
 }
+
+
 void adjustLeft(){
   while (digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, 40);
@@ -101,21 +105,65 @@ void stopMotor(){
 
 
 void botChoice(){
+  switch (nodes[n]){
+    case 'a':
  if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){  //0000 Lost
    
     } 
     else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
       goForward();
     }
-     else if(digitalRead(IRLEFT) == HIGH || digitalRead(IRRIGHT) == HIGH){  
+     else if(digitalRead(IRLEFT) == HIGH || digitalRead(IRRIGHT) == HIGH && millis() > (t+COOLDOWN)){  
       nextOrder();
     }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
       adjustLeft();
     }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
       adjustRight();
     }
+
+    break;
+
+    case 'b':
+ if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){  //0000 Lost
+   
+    } 
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
+      goForward();
+    }
+     else if(digitalRead(IRLEFT) == HIGH && digitalRead(IRRIGHT) == HIGH && millis() > (t+COOLDOWN)){  
+      nextOrder();
+    }
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
+      adjustLeft();
+    }
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
+      adjustRight();
+    }
+    break;
+
+     case 'c':
+ if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){  //0000 Lost
+   
+    } 
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
+      goForward();
+    }
+     else if(digitalRead(LEFTLINE) == HIGH&& digitalRead(RIGHTLINE) == HIGH && digitalRead(IRLEFT) == HIGH && digitalRead(IRRIGHT) == HIGH && millis() > (t+COOLDOWN)){  
+      nextOrder();
+    }
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
+      adjustLeft();
+    }
+    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
+      adjustRight();
+    }
+    break;
+    default:
+    break;
+
+  }
  }
 
   
@@ -123,13 +171,13 @@ void botChoice(){
 void goNorth(){
   switch (dir){
     case NORTH:
-    t = millis();
+   
     while(millis()< t+500){
       goForward();
     }
     break;
     case SOUTH:
-     t = millis();
+    
     while(millis()< t+500){
       rotateLeft();
     }
@@ -160,7 +208,7 @@ switch (dir){
     rotateRight();
     break;
     case EAST:
-     t = millis();
+   
     while(millis()< t+500){
       rotateLeft();
     }
@@ -169,7 +217,7 @@ switch (dir){
     }
     break;
     case WEST:
-    t = millis();
+   
     while(millis()< t+500){
       goForward();
     }
@@ -183,9 +231,10 @@ switch (dir){
 }
 
 void goSouth(){
+  t= millis();
   switch (dir){
     case NORTH:
-     t = millis();
+   
     while(millis()< t+500){
       rotateLeft();
     }
@@ -194,7 +243,7 @@ void goSouth(){
     }
     break;
     case SOUTH:
-    t = millis();
+    
     while(millis()< t+500){
       goForward();
     }
@@ -212,6 +261,8 @@ void goSouth(){
   dir = SOUTH;
 }
 
+
+
 void goEast(){
   switch (dir){
     case NORTH:
@@ -221,13 +272,13 @@ void goEast(){
     rotateLeft();
     break;
     case EAST:
-    t = millis();
+   
     while(millis()< t+500){
       goForward();
     }
     break;
     case WEST:
-     t = millis();
+   
     while(millis()< t+500){
       rotateLeft();
     }

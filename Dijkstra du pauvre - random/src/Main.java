@@ -9,8 +9,8 @@ public class Main {
         char origin = console.chooseOr();
         char end = console.chooseEnd();
         controller.origin = origin;
-        for (int i = 0 ; i< 1000;i++){
-            controller.searchRand(end);
+        for (int i = 0 ; i< 5000;i++){
+            controller.search(end);
             controller.setBest();
         }
         controller.sequence();

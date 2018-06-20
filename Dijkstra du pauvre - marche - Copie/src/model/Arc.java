@@ -8,15 +8,6 @@ public class Arc {
     private int length;
     private boolean used;
     private char dir;
-
-    public char getNode() {
-        return node;
-    }
-
-    public void setNode(char node) {
-        this.node = node;
-    }
-
     private char node;
 
     public Arc() {

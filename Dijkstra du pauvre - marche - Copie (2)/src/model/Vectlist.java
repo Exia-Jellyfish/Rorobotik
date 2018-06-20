@@ -144,11 +144,4 @@ public class Vectlist {
         Arc qi = new Arc('P','O',-8,0,'a');
         list[41] = qi;
     }
-
-
-    public void reset(){
-        for(int i = 0; i< 42;i++){
-            this.list[i].setUsed(false);
-        }
-    }
 }

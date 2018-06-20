@@ -9,14 +9,7 @@ public class Main {
         char origin = console.chooseOr();
         char end = console.chooseEnd();
         controller.origin = origin;
-        for (int i = 0 ; i< 1000;i++){
-            controller.searchRand(end);
-            controller.setBest();
-        }
+        controller.search(end);
         controller.sequence();
     }
 }
-
-/*FGBAFINO  length: 15
-ennnwsex
-abbabbb*/
