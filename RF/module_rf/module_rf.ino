@@ -1,27 +1,6 @@
 #include <VirtualWire.h>
 
-    int RF_RX_PIN = 6;
-    int n = 1;
-
-   
-    struct entete{
-      uint8_t start;
-      uint8_t recepter;
-      uint8_t emetter;
-      uint8_t idTram;
-      uint8_t checksum;
-    };
-    
-    struct data{
-      uint16_t data; 
-    };
-    
-    struct packet{
-      entete head;
-      data data; 
-    };
-
-    
+    int RF_RX_PIN = 2;
 
     void setup()
     {
@@ -48,6 +27,6 @@
           Serial.print(" ");
         }
         Serial.println("");
-      }
+      } else Serial.println("else");
        //Serial.println("sortie de boucle"); 
     }

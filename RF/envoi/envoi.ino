@@ -2,18 +2,12 @@
 #include <stdint.h>
 
 int RF_TX_PIN = 6;
-/*int n = 1; 
-char *contra = "";
-char *checkSum =  ""; 
-char *daTa = "";
- 
 
   struct entete{
-  const char start = "$";
-  const char *recepter = "g1";
-  const char *emetter = "g1";
-  char *idTram = n;
-  char *checksum = "";
+    const char start = "$";
+    const char *recepter = "g1";
+    const char *emetter = "g1";
+    char *checksum = "";
   };
   
   struct data{
@@ -25,43 +19,53 @@ char *daTa = "";
     data data; 
   };
 
-  entete hEad;
-  data dAta; 
  
-void createPacket(){
-  strcpy(hEad.start, "$$");
+  
+ 
+char * createPacket(){
+  entete hEad;
+  data dAta;
+  
+  char *checkSum =  ""; 
+  char *contra = "";
+  char * daTa = "lol";
+  strcpy(hEad.start, "?");
   strcpy(hEad.recepter, "g1");
   strcpy(hEad.emetter, "g1");
-  strcpy(hEad.idTram, n );
-  daTa = "order";
   strcpy(dAta.data, daTa);
-  getCheckSum(daTa);
+  checkSum  = getCheckSum(daTa);
   strcpy(hEad.checksum, checkSum); 
+  
   strcat(contra, (char *)hEad.start);
   strcat(contra, (char *)hEad.recepter);
   strcat(contra, (char *)hEad.emetter);
-  strcat(contra, (char *)hEad.idTram);
   strcat(contra, (char *)checkSum);
-  strcat(contra, (char *)dAta.data); 
-  n++; 
+  strcat(contra, (char *)dAta.data);
+  return (char *)contra; 
 }
-void getCheckSum(char *string)
+
+char * getCheckSum(char *string)
 {
-  uint8_t XOR = 0; 
+  int XOR;  
+  if( strlen(string) != 0){
   for (int i = 0; i < strlen(string); i++) 
   {
-    XOR = XOR ^ string[i];
+    XOR += *(string++); 
   }
-  char xOR[5];
+  }
+  char xOR[12];
   sprintf(xOR, "%d", XOR);
-  checkSum = xOR; 
-  Serial.print("xOR:");
-  Serial.println(checkSum);
-}*/
+ // Serial.println(xOR);
+  return xOR; 
+
+} // ok 
+
+
+
 
 void setup()
 {
- Serial.begin(9600);  
+ Serial.begin(9600);
  vw_set_tx_pin(RF_TX_PIN); // Setup transmit pin
  vw_setup(2000); // Transmission speed in bits per seconds
  vw_rx_start();
@@ -70,12 +74,10 @@ void setup()
 
 void loop()
 {
- //createPacket();
- //Serial.print("contra");
- //Serial.println(contra); 
-// vw_send((uint8_t *)contra, strlen(contra));
- char *msg = "hello";
- vw_send((uint8_t *)msg, strlen(msg)); 
- Serial.println("ready"); 
- delay(500);
- }
+ char * msg = createPacket();
+ Serial.println(msg);
+
+ vw_send(msg, strlen(msg));
+ vw_wait_tx(); 
+ delay(10000000);
+}
