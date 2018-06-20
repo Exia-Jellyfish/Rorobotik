@@ -3,63 +3,61 @@
 
 int RF_TX_PIN = 2;
 int n = 1; 
-char *contra = ""; 
+char *contra = "";
+char *checkSum =  ""; 
+char *daTa = "";
+ 
 
   struct entete{
   const char start = "$";
   const char *recepter = "g1";
   const char *emetter = "g1";
   char *idTram = n;
-  char *checksum;
-};
-
-struct data{
-  char *data = "Hello recepteur!"; 
-};
-
-struct packet{
-  entete head;
-  data data; 
-};
-
-void createPacket(){
+  char *checksum = "";
+  };
+  
+  struct data{
+    char *data = "Hello recepteur!"; 
+  };
+  
+  struct packet{
+    entete head;
+    data data; 
+  };
 
   entete hEad;
   data dAta; 
-   
-  strcpy(hEad.start, "$");
+ 
+void createPacket(){
+  strcpy(hEad.start, "$$");
   strcpy(hEad.recepter, "g1");
   strcpy(hEad.emetter, "g1");
   strcpy(hEad.idTram, n );
-  char *daTa = "lololol";
+  daTa = "order";
   strcpy(dAta.data, daTa);
-  char *checksum = getCheckSum(daTa);
-  strcpy(hEad.checksum, checksum);
-  packet pcket = {hEad, dAta};
-  
+  getCheckSum(daTa);
+  //Serial.print("so?");
+  strcpy(hEad.checksum, checkSum); 
   strcat(contra, (char *)hEad.start);
   strcat(contra, (char *)hEad.recepter);
   strcat(contra, (char *)hEad.emetter);
   strcat(contra, (char *)hEad.idTram);
-  strcat(contra, (char *)hEad.checksum);
+  strcat(contra, (char *)checkSum);
   strcat(contra, (char *)dAta.data); 
-  
-  Serial.print("crypted:");
-  Serial.println(contra);
   n++; 
 }
-
-char* getCheckSum(char *string)
+void getCheckSum(char *string)
 {
-  int XOR = 0; 
+  uint8_t XOR = 0; 
   for (int i = 0; i < strlen(string); i++) 
   {
     XOR = XOR ^ string[i];
   }
-  char xOR[12];
+  char xOR[5];
   sprintf(xOR, "%d", XOR);
-  Serial.println(xOR);
-  return xOR;
+  checkSum = xOR; 
+  Serial.print("xOR:");
+  Serial.println(checkSum);
 }
 
 void setup()
@@ -73,14 +71,10 @@ void setup()
 
 void loop()
 {
- /*const char *msg = "Hello, World!";
- Serial.println((char *)msg);
- vw_send((char *) msg, strlen(msg)); 
- vw_wait_tx(); 
- delay(1000);*/
- 
  createPacket();
- vw_send((char *)contra, strlen(contra));  
- vw_wait_tx(); 
+ Serial.print("contra");
+ Serial.println(contra); 
+ //vw_send((uint8_t *)contra, strlen(contra));
+ //vw_wait_tx(); 
  delay(1000);
 }
