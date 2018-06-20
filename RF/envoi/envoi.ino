@@ -1,8 +1,8 @@
 #include <VirtualWire.h>
 #include <stdint.h>
 
-int RF_TX_PIN = 2;
-int n = 1; 
+int RF_TX_PIN = 6;
+/*int n = 1; 
 char *contra = "";
 char *checkSum =  ""; 
 char *daTa = "";
@@ -17,7 +17,7 @@ char *daTa = "";
   };
   
   struct data{
-    char *data = "Hello recepteur!"; 
+    char *data = ""; 
   };
   
   struct packet{
@@ -36,7 +36,6 @@ void createPacket(){
   daTa = "order";
   strcpy(dAta.data, daTa);
   getCheckSum(daTa);
-  //Serial.print("so?");
   strcpy(hEad.checksum, checkSum); 
   strcat(contra, (char *)hEad.start);
   strcat(contra, (char *)hEad.recepter);
@@ -58,7 +57,7 @@ void getCheckSum(char *string)
   checkSum = xOR; 
   Serial.print("xOR:");
   Serial.println(checkSum);
-}
+}*/
 
 void setup()
 {
@@ -71,10 +70,12 @@ void setup()
 
 void loop()
 {
- createPacket();
- Serial.print("contra");
- Serial.println(contra); 
- //vw_send((uint8_t *)contra, strlen(contra));
- //vw_wait_tx(); 
- delay(1000);
-}
+ //createPacket();
+ //Serial.print("contra");
+ //Serial.println(contra); 
+// vw_send((uint8_t *)contra, strlen(contra));
+ char *msg = "hello";
+ vw_send((uint8_t *)msg, strlen(msg)); 
+ Serial.println("ready"); 
+ delay(500);
+ }
