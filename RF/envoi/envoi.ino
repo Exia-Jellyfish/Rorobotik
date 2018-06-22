@@ -1,7 +1,7 @@
 #include <VirtualWire.h>
 #include <stdint.h>
 
-int RF_TX_PIN = 6;
+char msg[255] = "";
 
   struct entete{
     const char *start = "$";
@@ -14,37 +14,20 @@ int RF_TX_PIN = 6;
     char *data = "order"; 
   };
   
-  struct packet{
-    entete head;
-    data data; 
-  };
-
- 
-  
- 
-char * createPacket(){
+void createPacket(){
   entete hEad;
   data dAta;
-  
-   
-  char *contra = "";
-  char *daTa = "right";
-  strcpy(hEad.start, "?");
-  strcpy(hEad.recepter, "g1");
-  strcpy(hEad.emetter, "e1");
+  char *daTa = "rt";
   strcpy(dAta.data, daTa);
-  char *checkSum  = getCheckSum(daTa); // problème à résuoudre avec la recupération de check sum. 
-  strcpy(hEad.checksum, checkSum); 
+  char *checkSum  = getCheckSum(daTa);
   
-  strcat(contra, (char *)hEad.start);
-  strcat(contra, (char *)hEad.recepter);
-  strcat(contra, (char *)hEad.emetter);
-  strcat(contra, (char *)checkSum);
-  strcat(contra, (char *)dAta.data);
-  return contra; 
-
-  
+  strcat(msg, (char *)hEad.start);
+  strcat(msg, (char *)hEad.recepter);
+  strcat(msg, (char *)hEad.emetter);
+  strcat(msg, (char *)checkSum);
+  strcat(msg, (char *)dAta.data);
 }
+
 char * getCheckSum(char *string)
 {
   int XOR;  
@@ -58,8 +41,7 @@ char * getCheckSum(char *string)
 
 } // ok 
 
-
-
+int RF_TX_PIN = 6;
 
 void setup()
 {
@@ -67,14 +49,15 @@ void setup()
  vw_set_tx_pin(RF_TX_PIN); // Setup transmit pin
  vw_setup(2000); // Transmission speed in bits per seconds
  vw_rx_start();
- Serial.println("ready"); 
+ Serial.println("ready emetteur"); 
 }
 
 void loop()
 {
- char *msg = createPacket();
+ createPacket();
+ //char *msg = "hello"; 
  Serial.println(msg);
- vw_send(msg, strlen(msg));
- vw_wait_tx(); 
- delay(10000);
+ vw_send((uint8_t *)msg, strlen(msg));
+ vw_wait_tx();
+ msg[0] = 0x00;
 }
