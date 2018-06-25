@@ -1,25 +1,16 @@
 #include <VirtualWire.h>
 #include <stdint.h>
 
-/*char msg[255] = "";
+char msg[255] = "";
+int RF_TX_PIN = 8;
 
-  struct entete{
-    const char *start = "$";
-    const char *recepter = "g1";
-    const char *emetter = "e1";
-    char *checksum = "";
-  };
-  
-  struct data{
-    char *data = "order"; 
-  };
+ /* 
   
 void createPacket(){
   entete hEad;
   data dAta;
-  char *daTa = "rt";
-  strcpy(dAta.data, daTa);
-  char *checkSum  = getCheckSum(daTa);
+  strcpy(dAta.data, msg);
+  char *checkSum  = getCheckSum(msg);
   
   strcat(msg, (char *)hEad.start);
   strcat(msg, (char *)hEad.recepter);
@@ -41,8 +32,7 @@ char * getCheckSum(char *string)
 
 } // ok */
 
-int RF_TX_PIN = 8;
-char *msg = ""; 
+
 
 
 
@@ -57,7 +47,6 @@ void reception() {
         break;
       }
     }
-    Serial.print((char *)msg);
   }
 }
 
@@ -73,9 +62,20 @@ void setup()
 
 void loop()
 { 
- reception();   
-  
- vw_send((uint8_t *)msg, strlen(msg));
+ int i = 0;
+  if(Serial.available()>0){
+    while(Serial.available()){
+      unsigned char c = Serial.read();
+      msg[i] = c;
+      i++;
+      if(i >strlen(c)){
+        break;
+      }
+    }
+    Serial.print(msg); 
+  } 
+ //createPacket();
+ vw_send((byte *)msg, strlen(msg));
  vw_wait_tx();
  msg[0] = 0x00;
 
