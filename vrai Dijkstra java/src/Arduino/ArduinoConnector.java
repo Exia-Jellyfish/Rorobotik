@@ -16,7 +16,7 @@ public class ArduinoConnector {
 	static OutputStream outputStream;
 
 	public static void sendToArduino(String messageString) {
-		portList = CommPortIdentifier.getPortIdentifiers();
+	portList = CommPortIdentifier.getPortIdentifiers();
 
 		while (portList.hasMoreElements()) {
 

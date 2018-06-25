@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import Arduino.ArduinoConnector;
 import Dijkstra.*;
 import Dijkstra.Graphe;
 
@@ -42,11 +43,11 @@ public class Main {
 		// création du graphe
 		Graphe g0 = new Graphe(matDuree);
 		// LA SUITE
-
+		ArduinoConnector arduinoConnector = new ArduinoConnector();
 		// creation d'une instance de l'algorithme avec le graphe g0
 		Dijkstra dijkstra = new Dijkstra(g0.trad(origin), g0);
 
-		System.out.println(dijkstra.ordres(dijkstra.afficheChemin(dijkstra.trad(destination)), vectlist)) ;
+		arduinoConnector.sendToArduino(dijkstra.ordres(dijkstra.afficheChemin(dijkstra.trad(destination)), vectlist)); ;
 
 
 		// Pour afficher le chemin le plus rapide pour aller de beaulieu a Clemenceau
