@@ -18,15 +18,15 @@ public class Controller {
 
 			break;
 		case LEFT:
-
+			messageString = "l";
 			break;
 
 		case FORWARD:
-
+			messageString = "f";
 			break;
 
 		case UTURN:
-
+			messageString = "u";
 			break;
 
 		default:

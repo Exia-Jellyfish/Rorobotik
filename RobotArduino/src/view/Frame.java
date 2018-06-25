@@ -1,12 +1,11 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Panel;
+import view.Panel;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import controller.UserChoice;
 import controller.Controller;
@@ -18,13 +17,11 @@ import java.awt.event.KeyEvent;
 public class Frame extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 1L;
 	private Panel panel;
-	private JLabel lab;
 	private Controller controller;
 	
 	public Frame() {
 		controller = new Controller();
 		panel = new Panel();
-		lab = new JLabel();
 		
 		this.setTitle("Robot control");
 		this.setSize(400,325);
@@ -33,9 +30,9 @@ public class Frame extends JFrame implements KeyListener{
 		this.setBackground(Color.GRAY);
 		this.setAlwaysOnTop(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	
 		
 		panel.setLayout(new BorderLayout());
-		panel.add(lab,BorderLayout.SOUTH);
 		this.setContentPane(panel);
 		addKeyListener(this);
 		
