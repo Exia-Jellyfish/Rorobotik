@@ -41,7 +41,7 @@ char * getCheckSum(char *string)
 
 } // ok 
 
-int RF_TX_PIN = 6;
+int RF_TX_PIN = 8;
 
 void setup()
 {
