@@ -1,7 +1,7 @@
 #include <VirtualWire.h>
 #include <stdint.h>
 
-char msg[255] = "";
+/*char msg[255] = "";
 
   struct entete{
     const char *start = "$";
@@ -39,7 +39,7 @@ char * getCheckSum(char *string)
   sprintf(xOR, "%d", XOR);
   return xOR; 
 
-} // ok 
+} // ok */
 
 int RF_TX_PIN = 8;
 
@@ -54,8 +54,8 @@ void setup()
 
 void loop()
 {
- createPacket();
- //char *msg = "hello"; 
+ //createPacket();
+ char *msg = "rt";
  Serial.println(msg);
  vw_send((uint8_t *)msg, strlen(msg));
  vw_wait_tx();

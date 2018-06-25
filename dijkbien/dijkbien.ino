@@ -361,17 +361,19 @@ void nextOrder(){
 
 
 void standBy(){
-   uint8_t buf[VW_MAX_MESSAGE_LEN];
+      uint8_t buf[VW_MAX_MESSAGE_LEN];
       uint8_t buflen = VW_MAX_MESSAGE_LEN;
       char *checksum;
       char *chsum = ""; 
       int i; 
       bool roger = false;
+      Serial.println("go");
       while (roger == false){
        if(vw_get_message(buf, &buflen))
       {
         Serial.println((char *)buf);
-        if ((uint8_t)buf[0] == 36 && (uint8_t)buf[1] == 103 && (uint8_t)buf[2] == 49 && (uint8_t)buf[3] == 101 && (uint8_t)buf[4] == 49 )
+        roger == true;
+        /*if ((uint8_t)buf[0] == 36 && (uint8_t)buf[1] == 103 && (uint8_t)buf[2] == 49 && (uint8_t)buf[3] == 101 && (uint8_t)buf[4] == 49 )
         { // vérification de l'entête. 
                 for(i = 8; i < buflen; i++){
                   strcat(message, (char)buf[i]);
@@ -387,12 +389,12 @@ void standBy(){
                     roger = true;
                    
                 }
-           } 
-      } 
-      }
+           } */
+       
+      }  
 }
 
-
+}
 
 
 
@@ -407,7 +409,6 @@ void setup() {
   Serial.begin(9600);
   n=0;
   dir = WEST;
-
   standBy();
   
 }
