@@ -55,7 +55,7 @@ void setup()
 void loop()
 {
  //createPacket();
- char *msg = "rt";
+ char *msg = "senex";
  Serial.println(msg);
  vw_send((uint8_t *)msg, strlen(msg));
  vw_wait_tx();
