@@ -10,16 +10,16 @@ import javax.swing.JPanel;
 
 public class Panel extends JPanel {
 
+	public Panel() {
 
-public Panel(){
-	
-}
-	public void paintComponent(Graphics g){
-		try{
+	}
+
+	public void paintComponent(Graphics g) {
+		try {
 			Image kbd = ImageIO.read(new File("arrowkeys.png"));
-			g.drawImage(kbd,  78, 70, this);
-		
-		}	catch (IOException e) {
+			g.drawImage(kbd, 78, 70, this);
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
