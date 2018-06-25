@@ -57,7 +57,7 @@ void reception() {
         break;
       }
     }
-    Serial.print((char *)msg);
+    Serial.print(msg);
   }
 }
 
@@ -69,15 +69,20 @@ void setup()
  vw_setup(2000); // Transmission speed in bits per seconds
  vw_rx_start();
  Serial.println("emetteur");
+ delay(3000);
+ reception();
+ //Serial.print(msg);
 }
 
 void loop()
 { 
- reception();   
-  
+   
+
+
  vw_send((uint8_t *)msg, strlen(msg));
  vw_wait_tx();
- msg[0] = 0x00;
+ Serial.println(msg);
+// msg[0] = 0x00;
 
 }
 

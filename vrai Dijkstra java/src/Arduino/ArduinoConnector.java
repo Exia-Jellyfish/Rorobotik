@@ -23,7 +23,7 @@ public class ArduinoConnector {
 			portId = (CommPortIdentifier) portList.nextElement();
 			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 
-				if (portId.getName().equals("COM3")) {
+				if (portId.getName().equals("COM4")) {
 
 					try {
 						serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);

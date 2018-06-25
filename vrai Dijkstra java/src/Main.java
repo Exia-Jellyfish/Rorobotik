@@ -47,7 +47,7 @@ public class Main {
 		// creation d'une instance de l'algorithme avec le graphe g0
 		Dijkstra dijkstra = new Dijkstra(g0.trad(origin), g0);
 
-		arduinoConnector.sendToArduino(dijkstra.ordres(dijkstra.afficheChemin(dijkstra.trad(destination)), vectlist)); ;
+		arduinoConnector.sendToArduino(dijkstra.ordres(dijkstra.afficheChemin(dijkstra.trad(destination)), vectlist)+'x');
 
 
 		// Pour afficher le chemin le plus rapide pour aller de beaulieu a Clemenceau
