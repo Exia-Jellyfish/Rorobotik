@@ -7,7 +7,6 @@ public class Controller {
 	private UserChoice userChoice;
 
 	public Controller() {
-
 	}
 
 	public void movement() throws IOException {
@@ -33,6 +32,7 @@ public class Controller {
 			break;
 
 		}
+		System.out.println(messageString);
 	}
 
 	public UserChoice getUserChoice() {
