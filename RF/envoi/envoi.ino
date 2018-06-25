@@ -42,7 +42,7 @@ char * getCheckSum(char *string)
 } // ok */
 
 int RF_TX_PIN = 8;
-char msg[16]; 
+char *msg = ""; 
 
 void setup()
 {
@@ -50,29 +50,27 @@ void setup()
  vw_set_tx_pin(RF_TX_PIN); // Setup transmit pin
  vw_setup(2000); // Transmission speed in bits per seconds
  vw_rx_start();
- Serial.println("ready emetteur"); 
+ Serial.println("emetteur");
 }
 
 void loop()
 {
   int i = 0;
- //createPacket();
-  if (Serial.available()) {
-    boolean stringComplete = false;
-           while (Serial.available() && stringComplete == false){
-               msg[i] = Serial.read();
-               if (msg[i] == '\n') {
-                    stringComplete = true;
-               } 
-               i++;
-    } 
- //msg == "senex";
- Serial.println(msg);
+      if(Serial.available()){
+    while(Serial.available()){
+      unsigned char c = Serial.read();
+      msg[i] = c;
+      i++;
+      if(i >strlen(msg)){
+        break;
+      }
+    }
+    Serial.print((char *)msg);
+    
+  }
  vw_send((uint8_t *)msg, strlen(msg));
  vw_wait_tx();
  msg[0] = 0x00;
-}
-}
 
-
+}
 
