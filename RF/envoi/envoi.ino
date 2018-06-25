@@ -44,6 +44,24 @@ char * getCheckSum(char *string)
 int RF_TX_PIN = 8;
 char *msg = ""; 
 
+
+
+void reception() {
+ int i = 0;
+  if(Serial.available()){
+    while(Serial.available()){
+      unsigned char c = Serial.read();
+      msg[i] = c;
+      i++;
+      if(i >strlen(msg)){
+        break;
+      }
+    }
+    Serial.print((char *)msg);
+  }
+}
+
+
 void setup()
 {
  Serial.begin(9600);
@@ -54,20 +72,9 @@ void setup()
 }
 
 void loop()
-{
-  int i = 0;
-      if(Serial.available()){
-    while(Serial.available()){
-      unsigned char c = Serial.read();
-      msg[i] = c;
-      i++;
-      if(i >strlen(msg)){
-        break;
-      }
-    }
-    Serial.print((char *)msg);
-    
-  }
+{ 
+ reception();   
+  
  vw_send((uint8_t *)msg, strlen(msg));
  vw_wait_tx();
  msg[0] = 0x00;
