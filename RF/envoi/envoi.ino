@@ -42,6 +42,7 @@ char * getCheckSum(char *string)
 } // ok */
 
 int RF_TX_PIN = 8;
+char msg[16]; 
 
 void setup()
 {
@@ -54,10 +55,24 @@ void setup()
 
 void loop()
 {
+  int i = 0;
  //createPacket();
- char *msg = "senex";
+  if (Serial.available()) {
+    boolean stringComplete = false;
+           while (Serial.available() && stringComplete == false){
+               msg[i] = Serial.read();
+               if (msg[i] == '\n') {
+                    stringComplete = true;
+               } 
+               i++;
+    } 
+ //msg == "senex";
  Serial.println(msg);
  vw_send((uint8_t *)msg, strlen(msg));
  vw_wait_tx();
  msg[0] = 0x00;
 }
+}
+
+
+
