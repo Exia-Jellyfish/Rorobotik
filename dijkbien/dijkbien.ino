@@ -17,9 +17,9 @@
 #define adjust 45 //adjusting trajectory speed
 #define COOLDOWN 3000
 int n;
-String orders = "swnex";
+String orders;
 int dir;
-String nodes = "acbba";
+
 int t;
 int RF_RX_PIN = 6;
 char message[255] = "";
@@ -71,6 +71,28 @@ void rotateRight(){
   Motor.speed(MOTOR2, adjust);
   }
 goForward();
+}
+
+
+
+void setDir(){
+  switch (orders[0]){
+    case 'n':
+    dir = NORTH;
+    break;
+    case 's':
+    dir = SOUTH;
+    break;
+    case 'e':
+    dir = EAST;
+    break;
+    case 'w':
+    dir = WEST;
+    break;
+    default:
+    dir = NORTH;
+    break; 
+  }
 }
 
 
@@ -361,13 +383,24 @@ void nextOrder(){
 
 
 void standBy(){
+<<<<<<< HEAD
       byte buf[VW_MAX_MESSAGE_LEN];
       byte buflen = VW_MAX_MESSAGE_LEN;
       int i =0; 
+=======
+      uint8_t buf[VW_MAX_MESSAGE_LEN];
+      uint8_t buflen = VW_MAX_MESSAGE_LEN;
+      char *checksum;
+      char *chsum = ""; 
+      int i; 
+>>>>>>> 055d5c670a4f499d5afb85c38a5ef80e171d254a
       bool roger = false;
+      Serial.println(VW_MAX_MESSAGE_LEN);
       while (roger == false){
+        
        if(vw_get_message(buf, &buflen))
       {
+<<<<<<< HEAD
          for(i = 0; i < buflen; ++i)
         {
           strcat(message, (char *)buf[i]);
@@ -377,8 +410,33 @@ void standBy(){
         roger = true;
        }
       }
+=======
+        Serial.println("wesh");
+        Serial.println((char *)buf);
+        orders = (char *)buf;
+        roger == true;
+        
+        /*if ((uint8_t)buf[0] == 36 && (uint8_t)buf[1] == 103 && (uint8_t)buf[2] == 49 && (uint8_t)buf[3] == 101 && (uint8_t)buf[4] == 49 )
+        { // vérification de l'entête. 
+                for(i = 8; i < buflen; i++){
+                  strcat(message, (char)buf[i]);
+                  }
+               chsum = getCheckSum((char *)message);
+                for(i = 5 ; i < 8; i++){
+                  strcat(checksum, (char *)buf[i]);
+                  }
+                if(checksum == chsum){
+                   
+                      Serial.print("msg: ");
+                    Serial.println((char *)message);
+                    roger = true;
+                   
+                }
+           } */
+>>>>>>> 055d5c670a4f499d5afb85c38a5ef80e171d254a
        
-    }
+      }  
+}
 
 }
 
@@ -392,12 +450,16 @@ void setup() {
   vw_setup(2000); // Transmission speed in bits per second.
   vw_rx_start(); // Start the PLL receiver.
   Serial.begin(9600);
-  n=0;
-  dir = WEST;
+  n=1;
+  setDir();
+  //standBy();
+  orders = "wsenex";
+  Serial.println(orders);
   
 }
 
 void loop() {
+<<<<<<< HEAD
   
   for(int i =0; i<strlen(message); i++){
     message[i] = '\0';
@@ -406,5 +468,8 @@ void loop() {
  Serial.print("message : ");
  Serial.println((char *)message);
 //botChoice(); 
+=======
+botChoice(); 
+>>>>>>> 055d5c670a4f499d5afb85c38a5ef80e171d254a
      
 }
