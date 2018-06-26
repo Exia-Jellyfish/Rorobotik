@@ -10,7 +10,7 @@
 int n;
 #define I2C_ADDRESS 0x0f
 #define cruise 30 //cruise speed
-#define adjust 25  //adjusting trajectory speed
+#define adjust 35  //adjusting trajectory speed
 /*
  * 
  * 
@@ -40,8 +40,6 @@ void rotateRight(){
   }
 goForward();
 }
-
-
 void adjustLeft(){
   while (digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, adjust);
@@ -209,7 +207,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly
-  //botChoice();
+  botChoice();
    
   
 }
