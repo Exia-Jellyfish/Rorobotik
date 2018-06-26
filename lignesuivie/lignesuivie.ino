@@ -40,11 +40,13 @@ void rotateRight(){
   }
 goForward();
 }
+
+
 void adjustLeft(){
   while (digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, adjust);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, adjust);
+  Motor.speed(MOTOR2, -adjust);
   }
 
 }
