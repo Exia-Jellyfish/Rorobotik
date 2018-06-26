@@ -363,8 +363,6 @@ void nextOrder(){
 void standBy(){
       byte buf[VW_MAX_MESSAGE_LEN];
       byte buflen = VW_MAX_MESSAGE_LEN;
-      char *checksum;
-      char *chsum = ""; 
       int i =0; 
       bool roger = false;
       while (roger == false){
@@ -374,8 +372,8 @@ void standBy(){
         {
           strcat(message, (char *)buf[i]);
         }
-        Serial.print((char *)buf);
-       if(buf[buflen-1] == "\0"){
+        Serial.println((char *)buf);
+       if(buf[buflen] == '\0'){
         roger = true;
        }
       }
@@ -389,7 +387,6 @@ void standBy(){
 
 void setup() {
   delay(2000);
-  // put your setup code here, to run once:
   Motor.begin(I2C_ADDRESS);
   vw_set_rx_pin(RF_RX_PIN);  // Setup receive pin.
   vw_setup(2000); // Transmission speed in bits per second.
@@ -401,6 +398,10 @@ void setup() {
 }
 
 void loop() {
+  
+  for(int i =0; i<strlen(message); i++){
+    message[i] = '\0';
+  }
  standBy();
  Serial.print("message : ");
  Serial.println((char *)message);

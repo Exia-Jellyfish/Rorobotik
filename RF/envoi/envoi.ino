@@ -4,21 +4,7 @@
 char msg[255] = "";
 int RF_TX_PIN = 8;
 
- /* 
-  
-void createPacket(){
-  entete hEad;
-  data dAta;
-  strcpy(dAta.data, msg);
-  char *checkSum  = getCheckSum(msg);
-  
-  strcat(msg, (char *)hEad.start);
-  strcat(msg, (char *)hEad.recepter);
-  strcat(msg, (char *)hEad.emetter);
-  strcat(msg, (char *)checkSum);
-  strcat(msg, (char *)dAta.data);
-}
-
+ /*
 char * getCheckSum(char *string)
 {
   int XOR;  
@@ -58,26 +44,18 @@ void setup()
  vw_setup(2000); // Transmission speed in bits per seconds
  vw_rx_start();
  Serial.println("emetteur");
+ delay(3000);
+ Serial.print(msg);
 }
 
 void loop()
-{ 
- int i = 0;
-  if(Serial.available()>0){
-    while(Serial.available()){
-      unsigned char c = Serial.read();
-      msg[i] = c;
-      i++;
-      if(i >strlen(c)){
-        break;
-      }
-    }
-    Serial.print(msg); 
-  } 
+{  
  //createPacket();
+ reception();
  vw_send((byte *)msg, strlen(msg));
  vw_wait_tx();
- msg[0] = 0x00;
-
+ Serial.println(msg);
+ for(int i =0; i<strlen(msg); i++){
+    msg[i] = "";
+  }
 }
-
