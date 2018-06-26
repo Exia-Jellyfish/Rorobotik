@@ -107,11 +107,11 @@ void stopMotor(){
 
 
 void botChoice(){
-   if(digitalRead(IRRIGHT) == HIGH ){  
+  /* if(digitalRead(IRRIGHT) == HIGH ){  
      rotateRight;
       
     }
-    else if( digitalRead(IRLEFT) == HIGH){
+    else */if( digitalRead(IRLEFT) == HIGH){
       rotateLeft;
     }
    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
