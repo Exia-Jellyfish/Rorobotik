@@ -20,8 +20,7 @@ char * getCheckSum(char *string)
 
 
 
-
-
+//Prend les entrées Sérial et les charge dans "msg"
 void reception() {
  int i = 0;
   if(Serial.available()){
@@ -45,7 +44,7 @@ void setup()
  vw_rx_start();
  Serial.println("emetteur");
  delay(3000);
- Serial.print(msg);
+
 }
 
 void loop()
@@ -55,7 +54,7 @@ void loop()
  vw_send((byte *)msg, strlen(msg));
  vw_wait_tx();
  Serial.println(msg);
- for(int i =0; i<strlen(msg); i++){
-    msg[i] = "";
+ for(int i =0; i<strlen(msg); i++){ //reinitialisation des char de "msg"
+    //msg[i] = "";
   }
 }

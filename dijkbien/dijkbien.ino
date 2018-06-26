@@ -17,12 +17,13 @@
 #define adjust 45 //adjusting trajectory speed
 #define COOLDOWN 3000
 int n;
-String orders = "swnex";
+int i;
+String orders;
 int dir;
-String nodes = "acbba";
 int t;
 int RF_RX_PIN = 6;
 char message[255] = "";
+String test;
 /*
  * 
  * 
@@ -76,18 +77,18 @@ goForward();
 
 void adjustLeft(){
   while (digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, 40);
+    Motor.speed(MOTOR1, -(cruise-20));
   
-  Motor.speed(MOTOR2, -40);
+  Motor.speed(MOTOR2, -cruise);
   }
 
 }
 
 void adjustRight(){
   while (digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, -40);
+    Motor.speed(MOTOR1, -cruise);
   
-  Motor.speed(MOTOR2, 40);
+  Motor.speed(MOTOR2, -(cruise-20));
   
   }
 
@@ -113,78 +114,26 @@ void stopMotor(){
 
 
 void botChoice(){
- /* switch (nodes[n]){
-    case 'a':
- if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){  //0000 Lost
-   
-    } 
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
-      goForward();
-    }
-     else if(digitalRead(IRLEFT) == HIGH || digitalRead(IRRIGHT) == HIGH && millis() > (t+COOLDOWN)){  
-      nextOrder();
-    }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
-      adjustLeft();
-    }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
-      adjustRight();
-    }
-
-    break;
-
-    case 'b':
- if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){  //0000 Lost
-   
-    } 
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
-      goForward();
-    }
-     else if(digitalRead(IRLEFT) == HIGH && digitalRead(IRRIGHT) == HIGH && millis() > (t+COOLDOWN)){  
-      nextOrder();
-    }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
-      adjustLeft();
-    }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
-      adjustRight();
-    }
-    break;
-
-     case 'c':
- if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){  //0000 Lost
-   
-    } 
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
-      goForward();
-    }
-     else if(digitalRead(LEFTLINE) == HIGH&& digitalRead(RIGHTLINE) == HIGH && digitalRead(IRLEFT) == HIGH && digitalRead(IRRIGHT) == HIGH && millis() > (t+COOLDOWN)){  
-      nextOrder();
-    }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
-      adjustLeft();
-    }
-    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW && millis() > (t+COOLDOWN)){
-      adjustRight();
-    }
-    break;
-    default:
-    break;
-
-  }*/
    if(digitalRead(IRRIGHT) == HIGH || digitalRead(IRLEFT) == HIGH){  
       nextOrder();
+      
     }
    else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){  
       goForward();
+      
     }
     else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW ){
+     
       adjustLeft();
+      
     }
     else if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW ){
+       
       adjustRight();
+  
     }
     else{
+   
  }}
 
   
@@ -372,9 +321,13 @@ void standBy(){
         {
           strcat(message, (char *)buf[i]);
         }
-        Serial.println((char *)buf);
+        
+//      Serial.println((char *)buf);
+        orders = (char *)buf;
+         
+         roger = true;
        if(buf[buflen] == '\0'){
-        roger = true;
+        
        }
       }
        
@@ -383,6 +336,24 @@ void standBy(){
 }
 
 
+void setDir(){
+  switch (orders[0]){
+    case 'n':
+    dir = NORTH;
+    break;
+    case 'e':
+    dir = EAST;
+    break;
+    case 's':
+    dir = SOUTH;
+    break;
+    case 'w':
+    dir = WEST;
+    break;
+    default:
+    break;
+  }
+}
 
 
 void setup() {
@@ -392,9 +363,9 @@ void setup() {
   vw_setup(2000); // Transmission speed in bits per second.
   vw_rx_start(); // Start the PLL receiver.
   Serial.begin(9600);
-  n=0;
-  dir = WEST;
-  
+  n=1;
+
+   standBy();
 }
 
 void loop() {
@@ -402,9 +373,12 @@ void loop() {
   for(int i =0; i<strlen(message); i++){
     message[i] = '\0';
   }
- standBy();
- Serial.print("message : ");
- Serial.println((char *)message);
-//botChoice(); 
+
+
+
+
+botChoice(); 
+
+Serial.println(orders);
      
 }
