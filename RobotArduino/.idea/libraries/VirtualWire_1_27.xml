@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="VirtualWire-1.27">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Lib arduino/VirtualWire-1.27.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

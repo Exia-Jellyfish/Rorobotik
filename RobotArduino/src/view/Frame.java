@@ -20,6 +20,7 @@ public class Frame extends JFrame implements KeyListener {
 
 	public Frame() {
 		controller = new Controller();
+
 		panel = new Panel();
 
 		this.setTitle("Robot control");

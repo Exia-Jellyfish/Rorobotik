@@ -5,34 +5,35 @@ import java.io.IOException;
 public class Controller {
 	public static String messageString;
 	private UserChoice userChoice;
-
-	public Controller() {
+    ArduinoConnector ardui;
+    public Controller() {
+	    this.ardui	= new ArduinoConnector();
 	}
 
 	public void movement() throws IOException {
 		switch (userChoice) {
 
 		case RIGHT:
-			messageString = "r";
+			messageString = "e";
 
 			break;
 		case LEFT:
-			messageString = "l";
+			messageString = "w";
 			break;
 
 		case FORWARD:
-			messageString = "f";
+			messageString = "n";
 			break;
 
 		case UTURN:
-			messageString = "u";
+			messageString = "s";
 			break;
 
 		default:
 			break;
 
 		}
-		System.out.println(messageString);
+		ardui.sendToArduino(messageString);
 	}
 
 	public UserChoice getUserChoice() {
