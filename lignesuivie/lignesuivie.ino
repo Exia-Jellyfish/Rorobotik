@@ -87,15 +87,15 @@ void botChoice(){
     n=0;
   }
   else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010 forward with adjustments needed to the right
-    while(digitalRead(LEFTLINE) == LOW){
+  
     adjustRight(); 
-    }
+    
     n=0;
   }
   if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0100
-   while(digitalRead(RIGHTLINE) == LOW){
+
      adjustLeft(); 
-    }
+    
    n=0;
   }
 

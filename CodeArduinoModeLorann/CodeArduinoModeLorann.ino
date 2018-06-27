@@ -13,8 +13,8 @@
 #define NORTH 1
 #define SOUTH 3
 #define I2C_ADDRESS 0x0f
-#define cruise 40 //cruise speed
-#define adjust 45 //adjusting trajectory speed
+#define cruise 30 //cruise speed
+#define adjust 35 //adjusting trajectory speed
 #define COOLDOWN 3000
 int n;
 int i;
@@ -30,22 +30,12 @@ String test;
  * 
  */
 void goForward(){
-   Motor.speed(MOTOR1, -(cruise-10));
+   Motor.speed(MOTOR1, -cruise);
   // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -(cruise-10));
+  Motor.speed(MOTOR2, -cruise);
 }
 
 void rotateLeft(){
-   while(millis()<t+90){
-     Motor.speed(MOTOR1, -adjust);
-  // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -adjust);
-  }
-  while(millis()<t+500){
-     Motor.speed(MOTOR1, adjust);
-  // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -adjust);
-  }
   while(digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW ){
     Motor.speed(MOTOR1, adjust);
   // Set speed of MOTOR2, Clockwise
@@ -55,16 +45,6 @@ void rotateLeft(){
 }
 
 void rotateRight(){
-   while(millis()<t+90){
-     Motor.speed(MOTOR1, -adjust);
-  // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, -adjust);
-  }
-  while(millis()<t+500){
-     Motor.speed(MOTOR1, -adjust);
-  // Set speed of MOTOR2, Clockwise
-  Motor.speed(MOTOR2, adjust);
-  }
   while(digitalRead(RIGHTLINE) == LOW && digitalRead(LEFTLINE) == LOW){
     Motor.speed(MOTOR1, -adjust);
   // Set speed of MOTOR2, Clockwise
@@ -72,22 +52,20 @@ void rotateRight(){
   }
 goForward();
 }
-
-
 void adjustLeft(){
   while (digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, -(cruise-20));
-  
-  Motor.speed(MOTOR2, -cruise);
+    Motor.speed(MOTOR1, adjust);
+  // Set speed of MOTOR2, Clockwise
+  Motor.speed(MOTOR2, -adjust);
   }
 
 }
 
 void adjustRight(){
   while (digitalRead(LEFTLINE) == LOW){
-    Motor.speed(MOTOR1, -cruise);
-  
-  Motor.speed(MOTOR2, -(cruise-20));
+    Motor.speed(MOTOR1, -adjust);
+  // Set speed of MOTOR2, Clockwise
+  Motor.speed(MOTOR2, adjust);
   
   }
 
@@ -97,6 +75,7 @@ void stopMotor(){
   Motor.stop(MOTOR1);
   Motor.stop(MOTOR2);
 }
+
 
 
 
@@ -111,30 +90,139 @@ void stopMotor(){
 
 
 void botChoice(){
-   if(digitalRead(IRRIGHT) == HIGH || digitalRead(IRLEFT) == HIGH){  
-      stopMotor();
-      delay(1000);
-      nextOrder();
-      
+  if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0000 Lost
+   n++;
+    Serial.println(n);
+    if (n>400){
+      stop();
+    } 
+  }
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110 full forward
+    goForward();
+    n=0;
+  }
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010 forward with adjustments needed to the right
+    adjustRight(); 
+    n=0;
+  }
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0100
+   adjustLeft();
+   n=0;
+  }
+
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH){ // 0001
+    rotateRight();
+  }
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW  && digitalRead(IRRIGHT) == LOW  ){ //1000
+    rotateLeft();
+  }
+   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //1001
+    if (millis()%2 ==1){
+      rotateLeft();
+    }else{
+      rotateRight();
     }
-   else if( digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH){  
-      goForward();
-      delay(500);
-      stopMotor();
-      
-    }
-    else if( digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW){
-     
-      adjustLeft();
-      
-    }
-    else if( digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH ){
-       
-      adjustRight();
+  }
   
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH){ //0111
+    if (millis()%2 ==1){
+      goForward();
+    }else{
+      rotateRight();
     }
-    else{}
- }
+  }
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW ){ //1110
+   if (millis()%2 ==1){
+      goForward();
+    }else{
+      rotateLeft();
+    }
+  }
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1111
+     switch (random(0-2)){
+      case 0:
+        goForward();
+        break;
+        
+      case 1:
+         rotateLeft();
+         break;
+
+      default:
+         rotateRight();
+     }
+  }
+  
+  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH  ){ // 0011
+    while(digitalRead(LEFTLINE) == LOW) {
+      adjustRight();
+    }
+    rotateRight();
+  }
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == LOW ){ //1000
+    while(digitalRead(LEFTLINE)== LOW){
+      adjustRight();
+    }
+    rotateLeft();
+  }
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1011
+     while(digitalRead(LEFTLINE)== LOW){
+      adjustRight();
+    }
+    switch (random(0-2)){
+      case 0:
+        goForward();
+        break;
+        
+      case 1:
+         rotateLeft();
+         break;
+
+      default:
+         rotateRight();
+     }
+  }
+  
+  if( digitalRead(IRLEFT) == LOW  && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //0101
+   while(digitalRead(RIGHTLINE)== LOW){
+        adjustLeft();
+      }
+     if (millis()%2 ==1){
+      goForward();
+    }else{
+      rotateRight();
+    }
+  }
+  if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == LOW ){ //0101
+    while(digitalRead(RIGHTLINE)== LOW){
+        adjustLeft();
+      }
+    if (millis()%2 ==1){
+      rotateLeft();
+    }else{
+      goForward();
+    }
+  }
+   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == HIGH ){ //1101
+    while(digitalRead(RIGHTLINE)== LOW){
+        adjustLeft();
+      }
+    switch (random(0-2)){
+      case 0:
+        goForward();
+        break;
+        
+      case 1:
+         rotateLeft();
+         break;
+
+      default:
+         rotateRight();
+     }
+  }
+  
+  
+}
 
   
 
