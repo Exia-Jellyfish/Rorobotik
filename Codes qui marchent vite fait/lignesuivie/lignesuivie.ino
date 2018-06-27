@@ -8,7 +8,6 @@
 //MOTOR1 = GAUCHE
 //MOTOR2 = DROITE
 int n;
-#define I2C_ADDRESS 0x0f
 #define cruise 30 //cruise speed
 #define adjust 35  //adjusting trajectory speed
 /*
@@ -77,17 +76,17 @@ void stop(){
 
 void botChoice(){
   if(digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == LOW){ //0000 Lost
-    n++;
+   n++;
     Serial.println(n);
     if (n>400){
       stop();
     } 
   }
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110 full forward
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0110 full forward
     goForward();
     n=0;
   }
-  if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010 forward with adjustments needed to the right
+  else if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == LOW){ //0010 forward with adjustments needed to the right
     adjustRight(); 
     n=0;
   }
@@ -140,12 +139,21 @@ void botChoice(){
   }
   
   if( digitalRead(IRLEFT) == LOW && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH && digitalRead(IRRIGHT) == HIGH  ){ // 0011
+    while(digitalRead(LEFTLINE) == LOW){
+      adjustRight();
+    }
     rotateRight();
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == LOW ){ //1000
+    while(digitalRead(LEFTLINE)== LOW){
+      adjustRight();
+    }
     rotateLeft();
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == LOW && digitalRead(RIGHTLINE) == HIGH  && digitalRead(IRRIGHT) == HIGH ){ //1011
+     while(digitalRead(LEFTLINE)== LOW){
+      adjustRight();
+    }
     switch (random(0-2)){
       case 0:
         goForward();
@@ -161,6 +169,9 @@ void botChoice(){
   }
   
   if( digitalRead(IRLEFT) == LOW  && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW && digitalRead(IRRIGHT) == HIGH ){ //0101
+   while(digitalRead(RIGHTLINE)== LOW){
+        adjustLeft();
+      }
      if (millis()%2 ==1){
       goForward();
     }else{
@@ -168,6 +179,9 @@ void botChoice(){
     }
   }
   if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == LOW ){ //0101
+    while(digitalRead(RIGHTLINE)== LOW){
+        adjustLeft();
+      }
     if (millis()%2 ==1){
       rotateLeft();
     }else{
@@ -175,6 +189,9 @@ void botChoice(){
     }
   }
    if( digitalRead(IRLEFT) == HIGH && digitalRead(LEFTLINE) == HIGH && digitalRead(RIGHTLINE) == LOW &&  digitalRead(IRRIGHT) == HIGH ){ //1101
+    while(digitalRead(RIGHTLINE)== LOW){
+        adjustLeft();
+      }
     switch (random(0-2)){
       case 0:
         goForward();
